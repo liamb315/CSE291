@@ -37,7 +37,7 @@ fn.print_performance(p, Y_test)
 print 'Logistic regression using gradient descent'
 t0 = time.time()
 w = np.zeros(X_train.shape[1])
-w = ml.gradient_descent(X_train, Y_train, w, 10)
+w = ml.gradient_descent(X_train, Y_train, w, 35)
 t1 = time.time()
 print ' Training time:', t1-t0
 p = ml.predict_logistic(X_test, w)

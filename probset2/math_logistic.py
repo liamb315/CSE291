@@ -41,11 +41,11 @@ def gradient(X, Y, w):
 	
 	Output:
 		Gradient of loss function at w'''
-	val = np.zeros(len(w))
+	grad = np.zeros(len(w))
 
 	for i in range(0, len(X)):
-		val += X[i]*(sigmoid(X[i], w)-Y[i])
-	return val
+		grad += X[i]*(sigmoid(X[i], w)-Y[i])
+	return grad
 
 
 def gradient_batch(X, Y, w, n):
@@ -86,20 +86,18 @@ def gradient_descent(X, Y, w, M):
 
 	alpha = 0.15
 	beta  = 0.5
-	l     = []
 
 	for i in range(0, M):
 		eta = 1.0
 		grad = gradient(X, Y, w)
 		loss = loss_logistic(X, Y, w)
-		l.append(loss)
+		print ' loss at iteration ',i,': ', loss
 		while loss_logistic(X, Y, (w-eta*grad)) >= (loss - alpha*eta*np.linalg.norm(grad)):
 			eta = beta * eta
 			if eta < 10E-20:
 				break
 		w = w - eta * grad
 
-	print l	
 	return w
 
 

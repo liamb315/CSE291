@@ -43,11 +43,8 @@ def preprocess_data(dataset, labels, binary_class = True):
 		if binary_class == True:
 			if labels[i] == 0 or labels[i] == 1:
 				X_list.append(np.append(1.0, x))	
-			if labels[i] == 0:
-				Y_list.append(0)
-			elif labels[i] == 1:
-				Y_list.append(1)
-
+				Y_list.append(labels[i])
+			
 		elif binary_class == False:
 			X_list.append(np.append(1.0, x))
 			Y_list.append(labels[i])

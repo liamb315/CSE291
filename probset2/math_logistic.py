@@ -1,6 +1,5 @@
 import numpy as np
 import random, math
-import random
 from scipy.misc import logsumexp
 
 
@@ -59,7 +58,7 @@ def gradient_batch(X, Y, w, n):
 	Output:
 		Gradient of loss function at w
 	'''
-	val = np.zeros(len(w))
+	grad = np.zeros(len(w))
 
 	# Retrieve a random subset of samples
 	indices = random.sample(xrange(len(X)), n)
@@ -67,8 +66,8 @@ def gradient_batch(X, Y, w, n):
 	Y_rand  = Y[indices]
 
 	for i in range(0, len(X_rand)):
-		val += X[i]*(sigmoid(X_rand[i], w)-Y_rand[i])
-	return val
+		grad += X[i]*(sigmoid(X_rand[i], w)-Y_rand[i])
+	return grad
 
 
 def gradient_descent(X, Y, w, M):
@@ -94,7 +93,7 @@ def gradient_descent(X, Y, w, M):
 		print ' loss at iteration ',i,': ', loss
 		while loss_logistic(X, Y, (w-eta*grad)) >= (loss - alpha*eta*np.linalg.norm(grad)):
 			eta = beta * eta
-			if eta < 10E-20:
+			if eta < 10E-10:
 				break
 		w = w - eta * grad
 
@@ -108,27 +107,26 @@ def stochastic_gradient_descent(X, Y, w, M, n):
 		1.  Training Labels Vector,   Y
 		2.  Initalized Weight Vector, w
 		3.  Max Number of Iterations, M
-		4.  Batch size of number of examples to consider, n
+		4.  Batch Size, n
 	
 	Output:
 		Optimized Weight Vector,      w
 	Further information:
 	http://ufldl.stanford.edu/tutorial/supervised/OptimizationStochasticGradientDescent/ '''
-	#eta   = 1E-5
 
 	alpha = 0.15
 	beta  = 0.5
 
 	for i in range(0, M):
-		print i
-		eta = 1.0
+		eta = 0.1
 		grad = gradient_batch(X, Y, w, n)
 		loss = loss_logistic(X, Y, w)
-
+		print ' loss at iteration ',i,': ', loss
 		while loss_logistic(X, Y, (w-eta*grad)) >= (loss - alpha*eta*np.linalg.norm(grad)):
 			eta = beta * eta
 			if eta < 10E-10:
 				break
-		w = w - eta*gradient_batch(X, Y, w, n)
+		w = w - eta * grad
+
 	return w
 

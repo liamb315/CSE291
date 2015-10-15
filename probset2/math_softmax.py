@@ -16,7 +16,7 @@ def predict(X, W):
 	pred = np.zeros(len(X))
 
 	for i in range(0, len(X)):
-		pred[i] = np.argmax(softmax(W, X[i]))
+		pred[i] = np.argmax(softmax(W.T, X[i]))
 
 	return pred
 
@@ -70,17 +70,35 @@ def stochastic_gradient_descent(X, Y, W, M, n):
 		1.  Training Labels Vector (m, 1),   Y
 		2.  Initalized Weight Matrix (n, k), W
 		3.  Max Number of Iterations, M
+		4.  Batch Size, n
 	
 	Output:
 		Optimized Weight Matrix (n, k),      W
 	Further information:
 	# Backtracking:  http://users.ece.utexas.edu/~cmcaram/EE381V_2012F/Lecture_4_Scribe_Notes.final.pdf	'''
 
-	eta = 0.001
+	'''
+	alpha = 0.15
+	beta  = 0.5
 
 	for i in range(0, M):
-		print 'Iteration ', i
-		# Update the parameter matrix
-		W = W - eta*gradient_batch(X, Y, W, n)
-		print' Loss: ', loss_softmax(W, X, Y)
+		eta = 1E-1
+		grad = gradient_batch(X, Y, W, n)
+		loss = loss_softmax(W, X, Y)
+		print ' loss at iteration ',i,': ', loss_softmax(W, X, Y)
+		while loss_softmax((W-eta*grad), X, Y) >= (loss - alpha*eta*np.linalg.norm(grad)):
+			eta = beta * eta
+			if eta < 10E-5:
+				break
+
+		W = W - eta*grad
+	''' 
+	eta   = 1E-3
+	decay = 0.9
+	for i in range(0, M):
+		grad = gradient_batch(X, Y, W, n)
+		loss = loss_softmax(W, X, Y)
+		print ' loss at iteration ',i,': ', loss_softmax(W, X, Y)
+		W = W - eta*grad
+		eta = eta/(1+i*decay)
 	return W

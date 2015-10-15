@@ -93,7 +93,7 @@ def gradient_descent(X, Y, w, M):
 		print ' loss at iteration ',i,': ', loss
 		while loss_logistic(X, Y, (w-eta*grad)) >= (loss - alpha*eta*np.linalg.norm(grad)):
 			eta = beta * eta
-			if eta < 10E-10:
+			if eta < 10E-8:
 				break
 		w = w - eta * grad
 
@@ -124,7 +124,7 @@ def stochastic_gradient_descent(X, Y, w, M, n):
 		print ' loss at iteration ',i,': ', loss
 		while loss_logistic(X, Y, (w-eta*grad)) >= (loss - alpha*eta*np.linalg.norm(grad)):
 			eta = beta * eta
-			if eta < 10E-10:
+			if eta < 10E-8:
 				break
 		w = w - eta * grad
 
